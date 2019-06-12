@@ -1,26 +1,18 @@
 package P2;
 
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ReizigerDao {
 
-	public static List<Reiziger> findAll() {
-		return null;
-	}
+	public List<Reiziger> findAll() throws SQLException;
 
-	public static List<Reiziger> findByGBdatum(String GBdatum){
-		return null;
-	}
+	public List<Reiziger> findByGBdatum(Date GBdatum) throws SQLException;
 	
-	public static Reiziger save(Reiziger reiziger){
-		return null;
-	}
+	public Reiziger save(Reiziger reiziger) throws SQLException;
 
-	public static Reiziger update(Reiziger reiziger){
-		return null;
-	}
+	public Reiziger update(Reiziger reiziger);
 
-	public static boolean delete(Reiziger reiziger) {
-		return false;
-	}
+	public boolean delete(Reiziger reiziger) throws SQLException;
 }

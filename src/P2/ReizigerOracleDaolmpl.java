@@ -1,6 +1,7 @@
 package P2;
 
 import java.sql.Date;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao {
 
-	public static ArrayList<Reiziger> findAll() throws SQLException {
+	public ArrayList<Reiziger> findAll() throws SQLException {
 		System.out.println("findAll()");
 		OracleBaseDao.getConnection();
 		ArrayList<Reiziger> alleReizigers = new ArrayList<Reiziger>();
@@ -23,10 +24,6 @@ public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao 
 			String achternaam = rs.getString("ACHTERNAAM");
 			Date gebortedatum = rs.getDate("GEBORTEDATUM");
 			Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, gebortedatum);
-			ArrayList<OVChipkaart> kaarten = OvchipkaartOracleDaoImpl.GetKaartenByReiziger(reiziger);		
-			for(OVChipkaart ov : kaarten) {	
-				reiziger.addOVChipkaart(ov);
-			}
 			alleReizigers.add(reiziger);
 		}
 		rs.close();
@@ -36,7 +33,7 @@ public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao 
 	}
 
 	// format voor de datum is nog niet hetzelfde voor de vergelijking
-	public static ArrayList<Reiziger> findByGBdatum(Date GBdatum) throws SQLException {
+	public ArrayList<Reiziger> findByGBdatum(Date GBdatum) throws SQLException {
 		System.out.println("findByGbDatum()");
 		ArrayList<Reiziger> reizigersOpGebortedatum = new ArrayList<Reiziger>();
 		OracleBaseDao.getConnection();
@@ -51,10 +48,6 @@ public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao 
 			String achternaam = rs.getString("ACHTERNAAM");
 			Date gebortedatum = rs.getDate("GEBORTEDATUM");
 			Reiziger reiziger = new Reiziger(id, voorletters, tussenvoegsel, achternaam, gebortedatum);
-			ArrayList<OVChipkaart> kaarten = OvchipkaartOracleDaoImpl.GetKaartenByReiziger(reiziger);		
-			for(OVChipkaart ov : kaarten) {	
-				reiziger.addOVChipkaart(ov);
-			}
 			reizigersOpGebortedatum.add(reiziger);
 		}
 		rs.close();
@@ -64,7 +57,7 @@ public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao 
 		return reizigersOpGebortedatum;
 	}
 
-	public static Reiziger save(Reiziger reiziger) throws SQLException {
+	public Reiziger save(Reiziger reiziger) throws SQLException {
 		OracleBaseDao.getConnection();
 		int reizigerId = reiziger.getReizigerId();
 		String voorletters = reiziger.getVoorletters();
@@ -80,19 +73,16 @@ public class ReizigerOracleDaolmpl extends OracleBaseDao implements ReizigerDao 
 		Statement stmt = conn.createStatement();
 		stmt.executeQuery(saveReizigersQuery);
 		stmt.close();
-		for (OVChipkaart OVChipkaart : reiziger.getOVChipkaarten()) {
-			OvchipkaartOracleDaoImpl.save(OVChipkaart);
-		}
 		OracleBaseDao.closeConnection();
 		return reiziger;
 	}
 
-	public static Reiziger update(Reiziger reiziger) {
+	public Reiziger update(Reiziger reiziger) {
 		// idk wat er moet worden upgedate
 		return reiziger;
 	}
 
-	public static boolean delete(Reiziger reiziger) throws SQLException {
+	public boolean delete(Reiziger reiziger) throws SQLException {
 		int id = reiziger.getReizigerId();
 		OracleBaseDao.getConnection();
 		Statement stmt = conn.createStatement();
